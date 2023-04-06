@@ -1,0 +1,2 @@
+load
+Load BoardFile board01.txt
