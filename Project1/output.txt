@@ -1,11 +1,11 @@
 < load > : Failed : No such method.
 < StartGame > : Failed : No board to play!
-< Print BombCount > : Failed : Not in playing state!
+< Print BombCount > : Failed : Game has not started!
 < Load BoardFile board01.txt > : Success
-< Print GameBoard > : Failed : Not in playing state!
+< Print GameBoard > : Failed : Game has not started!
 < Print GameState > : Standby
-< Print GameAnswer > : Failed : Not in playing state!
-< Print BombCount > : Failed : Not in playing state!
+< Print GameAnswer > : Failed : Game has not started!
+< Print BombCount > : Failed : Game has not started!
 < StartGame > : Success
 < Print GameBoard > : 
 # # # # # # # # # 
@@ -28,3 +28,84 @@ X 3 2 1 0 2 X 3 1
 0 1 1 1 1 X 3 3 2 
 0 0 0 0 1 1 2 X X 
 < LeftClick 1 1 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 # # # 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< LeftClick 1 3 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 # # 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< RightClick 1 3 > : Failed : This coordinate has already been opened!
+< RightClick 1 4 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 F # 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< LeftClick 1 4 > : Failed : This coordinate has been flaged, unflag it to click on it.
+< RightClick 1 4 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 ? # 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< LeftClick 1 4 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 1 # 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< RightClick 1 4 > : Failed : This coordinate has already been opened!
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 1 # 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< RightClick 1 5 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 1 F 0 0 0 
+0 0 0 # # # 0 0 0 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< Print FlagCount > : 1
+< Print OpenBlankCount > : 23
+< Print RemainBlankCount > : 47
