@@ -6,6 +6,9 @@ using namespace std;
 
 int col = 0, row = 0;
 int bombNum = 0;
+int flagNum = 0;
+int openedNum = 0;
+int remainNum = 0;
 char** devBoard;
 char** board;
 char** gameBoard;
@@ -13,26 +16,64 @@ ifstream inFile;
 ofstream outFile;
 ifstream in;
 
+void CountItem()
+{
+    flagNum = 0;
+    openedNum = 0;
+    remainNum = 0;
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            if (gameBoard[i][j] == '#' && board[i][j] != 'X')
+            {
+                remainNum++;
+            }
+            if (gameBoard[i][j] == 'F')
+            {
+                flagNum++;
+            }
+            if (isdigit(gameBoard[i][j]))
+            {
+                openedNum++;
+            }
+        }
+    }
+}
+
 void expandBoard(int y, int x)
 {
     gameBoard[y][x] = '0';
-    if (y - 1 >= 0 && board[y - 1][x] == '0')
+    if (y - 1 >= 0 && gameBoard[y - 1][x] != '0' && board[y - 1][x] == '0')
     {
         expandBoard(y - 1, x);
     }
-    if (y + 1 < col && board[y + 1][x] == '0')
+    if (y + 1 < col && gameBoard[y + 1][x] != '0' && board[y + 1][x] == '0')
     {
         expandBoard(y + 1, x);
     }
-    if (x - 1 >= 0 && board[y][x - 1] == '0')
+    if (x - 1 >= 0 && gameBoard[y][x - 1] != '0' && board[y][x - 1] == '0')
     {
         expandBoard(y, x - 1);
     }
-    if (x + 1 < row && board[y][x + 1] == '0')
+    if (x + 1 < row && gameBoard[y][x + 1] != '0' && board[y][x + 1] == '0')
     {
         expandBoard(y, x + 1);
     }
     return;
+}
+
+void NoteBoard(int y, int x)
+{
+    if (gameBoard[y][x] == '#')
+    {
+        gameBoard[y][x] = 'F';
+    }
+    else if (gameBoard[y][x] == 'F')
+    {
+        gameBoard[y][x] = '?';
+    }
+    else gameBoard[y][x] = '#';
 }
 
 void ClickBoard(int y, int x)
@@ -41,6 +82,7 @@ void ClickBoard(int y, int x)
     if (gameBoard[y][x] == 'X')
     {
         outFile << "Stepped on mine! Game end." << endl;
+        return;
     }
     else if (gameBoard[y][x] == '0')
     {
@@ -186,9 +228,9 @@ int main(int argc, char* argv[])
             cOutput += " " + type;
             if (type == "GameBoard")
             {
-                if (status != "Playing")
+                if (status == "Standby")
                 {
-                    ConditionOutput(cOutput, 0, ": Not in playing state!");
+                    ConditionOutput(cOutput, 0, ": Game has not started!");
                     continue;
                 }
                 ConditionOutput(cOutput, 2, "");
@@ -200,9 +242,9 @@ int main(int argc, char* argv[])
             }
             if (type == "GameAnswer")
             {
-                if (status != "Playing")
+                if (status == "Standby")
                 {
-                    ConditionOutput(cOutput, 0, ": Not in playing state!");
+                    ConditionOutput(cOutput, 0, ": Game has not started!");
                     continue;
                 }
                 ConditionOutput(cOutput, 2, "");
@@ -210,12 +252,39 @@ int main(int argc, char* argv[])
             }
             if (type == "BombCount")
             {
-                if (status != "Playing")
+                if (status == "Standby")
                 {
-                    ConditionOutput(cOutput, 0, ": Not in playing state!");
+                    ConditionOutput(cOutput, 0, ": Game has not started!");
                     continue;
                 }
                 ConditionOutput(cOutput, 2, to_string(bombNum));
+            }
+            if (type == "FlagCount")
+            {
+                if (status == "Standby")
+                {
+                    ConditionOutput(cOutput, 0, ": Game has not started!");
+                    continue;
+                }
+                ConditionOutput(cOutput, 2, to_string(flagNum));
+            }
+            if (type == "OpenBlankCount")
+            {
+                if (status == "Standby")
+                {
+                    ConditionOutput(cOutput, 0, ": Game has not started!");
+                    continue;
+                }
+                ConditionOutput(cOutput, 2, to_string(openedNum));
+            }
+            if (type == "RemainBlankCount")
+            {
+                if (status == "Standby")
+                {
+                    ConditionOutput(cOutput, 0, ": Game has not started!");
+                    continue;
+                }
+                ConditionOutput(cOutput, 2, to_string(remainNum));
             }
         }
         if (method == "StartGame")
@@ -238,8 +307,38 @@ int main(int argc, char* argv[])
                 ConditionOutput(cOutput, 0, ": Not in playing state!");
                 continue;
             }
+            if (gameBoard[y][x] == 'F')
+            {
+                ConditionOutput(cOutput, 0, ": This coordinate has been flaged, unflag it to click on it.");
+                continue;
+            }
             ConditionOutput(cOutput, 1, "");
             ClickBoard(y, x);
+            CountItem();
+            if (remainNum == 0)
+            {
+                outFile << "There is no spare blocks left, you win!" << endl;
+                status = "GameOver";
+            }
+        }
+        if (method == "RightClick")
+        {
+            int y, x;
+            inFile >> y >> x;
+            cOutput += " " + to_string(y) + " " + to_string(x);
+            if (status != "Playing")
+            {
+                ConditionOutput(cOutput, 0, ": Not in playing state!");
+                continue;
+            }
+            if (isdigit(gameBoard[y][x]))
+            {
+                ConditionOutput(cOutput, 0, ": This coordinate has already been opened!");
+                continue;
+            }
+            ConditionOutput(cOutput, 1, "");
+            NoteBoard(y, x);
+            CountItem();
         }
     }
 }
