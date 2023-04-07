@@ -22,5 +22,6 @@
   <ItemGroup>
     <Text Include="input.txt" />
     <Text Include="output.txt" />
+    <Text Include="board01.txt" />
   </ItemGroup>
 </Project>

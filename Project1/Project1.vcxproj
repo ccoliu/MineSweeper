@@ -131,6 +131,7 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="board01.txt" />
     <Text Include="input.txt" />
     <Text Include="output.txt" />
   </ItemGroup>

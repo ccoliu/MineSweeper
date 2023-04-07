@@ -1,2 +1,13 @@
 load
+StartGame
+Print BombCount
 Load BoardFile board01.txt
+Print GameBoard
+Print GameState
+Print GameAnswer
+Print BombCount
+StartGame
+Print GameBoard
+Print GameAnswer
+LeftClick 1 1
+Print GameBoard
