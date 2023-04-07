@@ -315,6 +315,10 @@ int main(int argc, char* argv[])
             ConditionOutput(cOutput, 1, "");
             ClickBoard(y, x);
             CountItem();
+            if (gameBoard[y][x] == 'X')
+            {
+                status = "GameOver";
+            }
             if (remainNum == 0)
             {
                 outFile << "There is no spare blocks left, you win!" << endl;

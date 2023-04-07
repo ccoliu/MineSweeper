@@ -28,3 +28,4 @@ Print GameBoard
 Print FlagCount
 Print OpenBlankCount
 Print RemainBlankCount
+LeftClick 2 4

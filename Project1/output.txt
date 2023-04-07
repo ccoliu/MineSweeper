@@ -109,3 +109,5 @@ X 3 2 1 0 2 X 3 1
 < Print FlagCount > : 1
 < Print OpenBlankCount > : 23
 < Print RemainBlankCount > : 47
+< LeftClick 2 4 > : Success
+Stepped on mine! Game end.
