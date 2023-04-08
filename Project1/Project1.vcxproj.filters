@@ -23,5 +23,6 @@
     <Text Include="input.txt" />
     <Text Include="output.txt" />
     <Text Include="board01.txt" />
+    <Text Include="board02.txt" />
   </ItemGroup>
 </Project>

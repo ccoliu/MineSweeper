@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="board01.txt" />
+    <Text Include="board02.txt" />
     <Text Include="input.txt" />
     <Text Include="output.txt" />
   </ItemGroup>

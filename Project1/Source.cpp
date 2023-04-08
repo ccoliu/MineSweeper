@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <time.h>
+#include <sstream>
 using namespace std;
 
 int col = 0, row = 0;
@@ -15,6 +17,8 @@ char** gameBoard;
 ifstream inFile;
 ofstream outFile;
 ifstream in;
+
+
 
 void CountItem()
 {
@@ -41,22 +45,50 @@ void CountItem()
     }
 }
 
+void ClearBoard()
+{
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            gameBoard[i][j] = '#';
+        }
+    }
+}
+
 void expandBoard(int y, int x)
 {
-    gameBoard[y][x] = '0';
-    if (y - 1 >= 0 && gameBoard[y - 1][x] != '0' && board[y - 1][x] == '0')
+    gameBoard[y][x] = board[y][x];
+    if (gameBoard[y][x] != '0') return;
+    if (x - 1 >= 0 && y - 1 >= 0 && gameBoard[y - 1][x - 1] == '#' && board[y - 1][x - 1] != 'X')
+    {
+        expandBoard(y - 1, x - 1);
+    }
+    if (x + 1 < row && y - 1 >= 0 && gameBoard[y - 1][x + 1] == '#' && board[y - 1][x + 1] != 'X')
+    {
+        expandBoard(y - 1, x + 1);
+    }
+    if (x - 1 >= 0 && y + 1 < col && gameBoard[y + 1][x - 1] == '#' && board[y + 1][x - 1] != 'X')
+    {
+        expandBoard(y + 1, x - 1);
+    }
+    if (x + 1 < row && y + 1 < col && gameBoard[y + 1][x + 1] == '#' && board[y + 1][x + 1] != 'X')
+    {
+        expandBoard(y + 1, x + 1);
+    }
+    if (y - 1 >= 0 && gameBoard[y - 1][x] == '#' && board[y - 1][x] != 'X')
     {
         expandBoard(y - 1, x);
     }
-    if (y + 1 < col && gameBoard[y + 1][x] != '0' && board[y + 1][x] == '0')
+    if (y + 1 < col && gameBoard[y + 1][x] == '#' && board[y + 1][x] != 'X')
     {
         expandBoard(y + 1, x);
     }
-    if (x - 1 >= 0 && gameBoard[y][x - 1] != '0' && board[y][x - 1] == '0')
+    if (x - 1 >= 0 && gameBoard[y][x - 1] == '#' && board[y][x - 1] != 'X')
     {
         expandBoard(y, x - 1);
     }
-    if (x + 1 < row && gameBoard[y][x + 1] != '0' && board[y][x + 1] == '0')
+    if (x + 1 < row && gameBoard[y][x + 1] == '#' && board[y][x + 1] != 'X')
     {
         expandBoard(y, x + 1);
     }
@@ -115,6 +147,63 @@ void printBoard(char** board)
             outFile << board[i][j] << " ";
         }
         outFile << endl;
+    }
+}
+
+void makeBoardRandom(int r, int c, string attr, int count, double rate)
+{
+    srand(time(NULL));
+    row = r;
+    col = c;
+    board = new char* [col];
+    gameBoard = new char* [col];
+    devBoard = new char* [col];
+    for (int i = 0; i < col; i++)
+    {
+        board[i] = new char[row];
+        gameBoard[i] = new char[row];
+        devBoard[i] = new char[row];
+    }
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            devBoard[i][j] = 'O';
+        }
+    }
+    if (attr == "count")
+    {
+        int y, x;
+        for (int i = 0; i < count; i++)
+        {
+            y = rand() % col;
+            x = rand() % row;
+            if (devBoard[y][x] == 'X')
+            {
+                i--;
+                continue;
+            }
+            devBoard[y][x] = 'X';
+        }
+    }
+    if (attr == "rate")
+    {
+        for (int i = 0; i < col; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                int n = rand() % 100;
+                if (n < rate * 100) devBoard[i][j] = 'X';
+            }
+        }
+    }
+    for (int i = 0; i < col; i++)
+    {
+        for (int j = 0; j < row; j++)
+        {
+            board[i][j] = checkSurroundMines(devBoard, i, j);
+            gameBoard[i][j] = '#';
+        }
     }
 }
 
@@ -208,6 +297,11 @@ int main(int argc, char* argv[])
             {
                 string filename;
                 inFile >> filename;
+                if (status != "Standby")
+                {
+                    ConditionOutput(cOutput + " " + filename, 0, ": Game has already started/ended!");
+                    continue;
+                }
                 ifstream in(filename);
                 if (in.is_open())
                 {
@@ -219,6 +313,44 @@ int main(int argc, char* argv[])
                 {
                     ConditionOutput(cOutput + " " + filename, 0, ": File can't find!");
                 }
+            }
+            if (type == "RandomCount")
+            {
+                int m, n, mines;
+                inFile >> m >> n >> mines;
+                cOutput += " " + to_string(m) + " " + to_string(n) + " " + to_string(mines);
+                if (status != "Standby")
+                {
+                    ConditionOutput(cOutput, 0, ": Game has already started/ended!");
+                    continue;
+                }
+                ConditionOutput(cOutput, 1, " ");
+                makeBoardRandom(m, n, "count", mines, 0);
+            }
+            if (type == "RandomRate")
+            {
+                int m, n;
+                double rate;
+                inFile >> m >> n >> rate;
+                string s = to_string(rate);
+                string str = "";
+                if (rate < 1 && rate > 0)
+                {
+                    for (int i = 0; i < s.length(); i++)
+                    {
+                        if (i > 1 && s[i] == '0') break;
+                        str += s[i];
+                    }
+                }
+                else str = s[0];
+                cOutput += " " + to_string(m) + " " + to_string(n) + " " + str;
+                if (status != "Standby")
+                {
+                    ConditionOutput(cOutput, 0, ": Game has already started/ended!");
+                    continue;
+                }
+                ConditionOutput(cOutput, 1, " ");
+                makeBoardRandom(m, n, "rate", 0, rate);
             }
         }
         if (method == "Print")
@@ -289,6 +421,11 @@ int main(int argc, char* argv[])
         }
         if (method == "StartGame")
         {
+            if (status != "Standby")
+            {
+                ConditionOutput(cOutput, 0, ": Game has already started/ended!");
+                continue;
+            }
             if (hasLoaded == false)
             {
                 ConditionOutput(cOutput, 0, ": No board to play!");
@@ -300,16 +437,26 @@ int main(int argc, char* argv[])
         if (method == "LeftClick")
         {
             int y, x;
-            inFile >> y >> x;
-            cOutput += " " + to_string(y) + " " + to_string(x);
+            inFile >> x >> y;
+            cOutput += " " + to_string(x) + " " + to_string(y);
             if (status != "Playing")
             {
                 ConditionOutput(cOutput, 0, ": Not in playing state!");
                 continue;
             }
+            if (y < 0 || x < 0 || x >= row || y >= col)
+            {
+                ConditionOutput(cOutput, 0, ": Out of range!");
+                continue;
+            }
             if (gameBoard[y][x] == 'F')
             {
                 ConditionOutput(cOutput, 0, ": This coordinate has been flaged, unflag it to click on it.");
+                continue;
+            }
+            if (isdigit(gameBoard[y][x]))
+            {
+                ConditionOutput(cOutput, 0, ": This coordinate has already been opened!");
                 continue;
             }
             ConditionOutput(cOutput, 1, "");
@@ -319,7 +466,7 @@ int main(int argc, char* argv[])
             {
                 status = "GameOver";
             }
-            if (remainNum == 0)
+            if (status != "GameOver" && remainNum == 0)
             {
                 outFile << "There is no spare blocks left, you win!" << endl;
                 status = "GameOver";
@@ -328,11 +475,16 @@ int main(int argc, char* argv[])
         if (method == "RightClick")
         {
             int y, x;
-            inFile >> y >> x;
-            cOutput += " " + to_string(y) + " " + to_string(x);
+            inFile >> x >> y;
+            cOutput += " " + to_string(x) + " " + to_string(y);
             if (status != "Playing")
             {
                 ConditionOutput(cOutput, 0, ": Not in playing state!");
+                continue;
+            }
+            if (y < 0 || x < 0 || x >= row || y >= col)
+            {
+                ConditionOutput(cOutput, 0, ": Out of range!");
                 continue;
             }
             if (isdigit(gameBoard[y][x]))
@@ -344,5 +496,28 @@ int main(int argc, char* argv[])
             NoteBoard(y, x);
             CountItem();
         }
+        if (method == "Replay")
+        {
+            if (status != "GameOver")
+            {
+                ConditionOutput(cOutput, 0, ": Game is not over/Game has not started!");
+                continue;
+            }
+            ConditionOutput(cOutput, 1, "");
+            status = "Standby";
+            ClearBoard();
+        }
+        if (method == "Quit")
+        {
+            if (status != "GameOver")
+            {
+                ConditionOutput(cOutput, 0, ": Game is not over/Game has not started!");
+                continue;
+            }
+            ConditionOutput(cOutput, 1, "");
+            break;
+        }
     }
+    inFile.close();
+    outFile.close();
 }

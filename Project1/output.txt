@@ -30,33 +30,36 @@ X 3 2 1 0 2 X 3 1
 < LeftClick 1 1 > : Success
 < Print GameBoard > : 
 0 0 0 0 0 0 0 0 0 
-0 0 0 # # # 0 0 0 
-0 0 0 # # # 0 0 0 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
-# # # # # # # # # 
-< LeftClick 1 3 > : Success
+< LeftClick 1 3 > : Failed : This coordinate has already been opened!
 < Print GameBoard > : 
 0 0 0 0 0 0 0 0 0 
-0 0 0 1 # # 0 0 0 
-0 0 0 # # # 0 0 0 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
-# # # # # # # # # 
+< LeftClick 88 87 > : Failed : Out of range!
 < RightClick 1 3 > : Failed : This coordinate has already been opened!
+< Load BoardFile board02.txt > : Failed : Game has already started/ended!
+< StartGame > : Failed : Game has already started/ended!
 < RightClick 1 4 > : Success
 < Print GameBoard > : 
 0 0 0 0 0 0 0 0 0 
-0 0 0 1 F # 0 0 0 
-0 0 0 # # # 0 0 0 
-# # # # # # # # # 
-# # # # # # # # # 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
+# F # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
@@ -65,31 +68,20 @@ X 3 2 1 0 2 X 3 1
 < RightClick 1 4 > : Success
 < Print GameBoard > : 
 0 0 0 0 0 0 0 0 0 
-0 0 0 1 ? # 0 0 0 
-0 0 0 # # # 0 0 0 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
+# ? # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
-# # # # # # # # # 
-# # # # # # # # # 
-< LeftClick 1 4 > : Success
+< RightClick 1 4 > : Success
 < Print GameBoard > : 
 0 0 0 0 0 0 0 0 0 
-0 0 0 1 1 # 0 0 0 
-0 0 0 # # # 0 0 0 
-# # # # # # # # # 
-# # # # # # # # # 
-# # # # # # # # # 
-# # # # # # # # # 
-# # # # # # # # # 
-# # # # # # # # # 
-< RightClick 1 4 > : Failed : This coordinate has already been opened!
-< Print GameBoard > : 
-0 0 0 0 0 0 0 0 0 
-0 0 0 1 1 # 0 0 0 
-0 0 0 # # # 0 0 0 
-# # # # # # # # # 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
@@ -98,16 +90,62 @@ X 3 2 1 0 2 X 3 1
 < RightClick 1 5 > : Success
 < Print GameBoard > : 
 0 0 0 0 0 0 0 0 0 
-0 0 0 1 1 F 0 0 0 
-0 0 0 # # # 0 0 0 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
 # # # # # # # # # 
-# # # # # # # # # 
-# # # # # # # # # 
+# F # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 < Print FlagCount > : 1
-< Print OpenBlankCount > : 23
-< Print RemainBlankCount > : 47
+< Print OpenBlankCount > : 34
+< Print RemainBlankCount > : 36
 < LeftClick 2 4 > : Success
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
+# # 1 # # # # # # 
+# F # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< LeftClick 1 4 > : Success
 Stepped on mine! Game end.
+< Print GameBoard > : 
+0 0 0 0 0 0 0 0 0 
+0 0 0 1 1 1 0 0 0 
+0 0 0 1 # 1 0 0 0 
+1 1 1 1 # 1 1 1 1 
+# X 1 # # # # # # 
+# F # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< Replay > : Success
+< Load RandomRate 9 9 0.2 > : Success
+< StartGame > : Success
+< LeftClick 1 4 > : Success
+< Print GameBoard > : 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# 2 # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+# # # # # # # # # 
+< Print GameAnswer > : 
+0 1 X 3 2 1 1 1 1 
+1 2 2 X X 1 1 X 2 
+X 2 1 2 2 1 2 3 X 
+X 2 1 1 1 0 2 X 3 
+2 2 2 X 1 1 4 X 3 
+1 X 2 1 1 1 X X 4 
+1 1 1 0 0 1 3 X X 
+1 1 0 0 0 0 2 3 3 
+X 1 0 0 0 0 1 X 1 
+< Quit > : Failed : Game is not over/Game has not started!
