@@ -128,24 +128,25 @@ Stepped on mine! Game end.
 < Load RandomRate 9 9 0.2 > : Success
 < StartGame > : Success
 < LeftClick 1 4 > : Success
+Stepped on mine! Game end.
 < Print GameBoard > : 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
-# 2 # # # # # # # 
+# X # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 # # # # # # # # # 
 < Print GameAnswer > : 
-0 1 X 3 2 1 1 1 1 
-1 2 2 X X 1 1 X 2 
-X 2 1 2 2 1 2 3 X 
-X 2 1 1 1 0 2 X 3 
-2 2 2 X 1 1 4 X 3 
-1 X 2 1 1 1 X X 4 
-1 1 1 0 0 1 3 X X 
-1 1 0 0 0 0 2 3 3 
-X 1 0 0 0 0 1 X 1 
-< Quit > : Failed : Game is not over/Game has not started!
+1 2 2 2 1 0 1 2 X 
+X 4 X X 1 0 1 X 2 
+X X 3 2 2 1 3 2 2 
+3 3 2 1 2 X 3 X 1 
+1 X 1 1 X 3 X 2 1 
+1 1 1 1 1 2 1 2 1 
+0 0 0 0 1 1 1 1 X 
+0 0 0 1 2 X 2 2 2 
+0 0 0 1 X 2 2 X 1 
+< Quit > : Success
