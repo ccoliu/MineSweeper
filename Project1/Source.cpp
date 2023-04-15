@@ -285,7 +285,7 @@ void ConditionOutput(string seq, int flag, string additional)
 
 int main(int argc, char* argv[])
 {
-    if (argc == 1 || argc == 2)
+    if (argc == 2)
     {
         string method;
         string cOutput;
@@ -538,6 +538,8 @@ int main(int argc, char* argv[])
     }
     else if (argc == 4)
     {
+        inFile.open(argv[2]);
+        outFile.open(argv[3]);
         string method;
         string cOutput;
         string status = "Standby";
