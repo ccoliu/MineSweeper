@@ -340,6 +340,7 @@ int main(int argc, char* argv[])
                     }
                     ConditionCinOutput(cOutput, 1, " ");
                     makeBoardRandom(m, n, "count", mines, 0);
+                    hasLoaded = true;
                 }
                 if (type == "RandomRate")
                 {
@@ -365,6 +366,7 @@ int main(int argc, char* argv[])
                     }
                     ConditionCinOutput(cOutput, 1, " ");
                     makeBoardRandom(m, n, "rate", 0, rate);
+                    hasLoaded = true;
                 }
             }
             if (method == "Print")
@@ -589,6 +591,7 @@ int main(int argc, char* argv[])
                     }
                     ConditionOutput(cOutput, 1, " ");
                     makeBoardRandom(m, n, "count", mines, 0);
+                    hasLoaded = true;
                 }
                 if (type == "RandomRate")
                 {
@@ -614,6 +617,7 @@ int main(int argc, char* argv[])
                     }
                     ConditionOutput(cOutput, 1, " ");
                     makeBoardRandom(m, n, "rate", 0, rate);
+                    hasLoaded = true;
                 }
             }
             if (method == "Print")
