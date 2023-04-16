@@ -19,7 +19,7 @@ ofstream outFile;
 ifstream in;
 
 
-
+// count every items number
 void CountItem()
 {
     flagNum = 0;
@@ -44,7 +44,7 @@ void CountItem()
         }
     }
 }
-
+//initialize the gameboard
 void ClearBoard()
 {
     for (int i = 0; i < col; i++)
@@ -55,11 +55,12 @@ void ClearBoard()
         }
     }
 }
-
+//Expand the surround of 0 point if also 0 expand again
 void expandBoard(int y, int x)
 {
     gameBoard[y][x] = board[y][x];
     if (gameBoard[y][x] != '0') return;
+    //check surround 8 points
     if (x - 1 >= 0 && y - 1 >= 0 && gameBoard[y - 1][x - 1] == '#' && board[y - 1][x - 1] != 'X')
     {
         expandBoard(y - 1, x - 1);
@@ -94,7 +95,7 @@ void expandBoard(int y, int x)
     }
     return;
 }
-
+//flag the point 
 void NoteBoard(int y, int x)
 {
     if (gameBoard[y][x] == '#')
@@ -107,7 +108,7 @@ void NoteBoard(int y, int x)
     }
     else gameBoard[y][x] = '#';
 }
-
+//click the point and if meet mine return if 0 call expnandBoard
 void ClickBoard(int y, int x)
 {
     gameBoard[y][x] = board[y][x];
@@ -120,7 +121,7 @@ void ClickBoard(int y, int x)
         expandBoard(y, x);
     }
 }
-
+//check surround have how many mines
 char checkSurroundMines(char** board, int y, int x)
 {
     int mines = 0;
@@ -136,7 +137,7 @@ char checkSurroundMines(char** board, int y, int x)
     }
     return mines + '0';
 }
-
+//print the board in file
 void printBoard(char** board)
 {
     for (int i = 0; i < col; i++)
@@ -148,7 +149,7 @@ void printBoard(char** board)
         outFile << endl;
     }
 }
-
+// print board
 void printCinBoard(char** board)
 {
     for (int i = 0; i < col; i++)
@@ -160,12 +161,13 @@ void printCinBoard(char** board)
         cout << endl;
     }
 }
-
+// Make a RandomBoard with a rate or a number of bomb
 void makeBoardRandom(int r, int c, string attr, int count, double rate)
 {
     srand(time(NULL));
     row = r;
     col = c;
+    //generate a r*c board
     board = new char* [col];
     gameBoard = new char* [col];
     devBoard = new char* [col];
@@ -175,6 +177,7 @@ void makeBoardRandom(int r, int c, string attr, int count, double rate)
         gameBoard[i] = new char[row];
         devBoard[i] = new char[row];
     }
+    //initialize dev board
     for (int i = 0; i < col; i++)
     {
         for (int j = 0; j < row; j++)
@@ -182,6 +185,7 @@ void makeBoardRandom(int r, int c, string attr, int count, double rate)
             devBoard[i][j] = 'O';
         }
     }
+    //generate a number of bomb
     if (attr == "count")
     {
         int y, x;
@@ -197,6 +201,7 @@ void makeBoardRandom(int r, int c, string attr, int count, double rate)
             devBoard[y][x] = 'X';
         }
     }
+    //generate a rate of bomb
     if (attr == "rate")
     {
         for (int i = 0; i < col; i++)
@@ -208,6 +213,7 @@ void makeBoardRandom(int r, int c, string attr, int count, double rate)
             }
         }
     }
+    //set board(player cannot see) and gameboard(player can see)
     for (int i = 0; i < col; i++)
     {
         for (int j = 0; j < row; j++)
@@ -217,10 +223,11 @@ void makeBoardRandom(int r, int c, string attr, int count, double rate)
         }
     }
 }
-
-void makeBoard(ifstream &in)
+//read the board file and make a static board
+void makeBoard(ifstream& in)
 {
     in >> col >> row;
+    //generate a row * col board
     board = new char* [col];
     gameBoard = new char* [col];
     devBoard = new char* [col];
@@ -230,6 +237,7 @@ void makeBoard(ifstream &in)
         gameBoard[i] = new char[row];
         devBoard[i] = new char[row];
     }
+    //layout mines
     for (int i = 0; i < col; i++)
     {
         for (int j = 0; j < row; j++)
@@ -240,6 +248,7 @@ void makeBoard(ifstream &in)
             devBoard[i][j] = s;
         }
     }
+    //initialize gameboard(player can see)
     for (int i = 0; i < col; i++)
     {
         for (int j = 0; j < row; j++)
@@ -249,14 +258,15 @@ void makeBoard(ifstream &in)
         }
     }
 }
-
+//print the player cin and print the condition(success or failed) 
 void ConditionCinOutput(string seq, int flag, string additional)
 {
+    //success
     if (flag == 1)
     {
         cout << "< " << seq << " > " << ": Success" << endl;
     }
-
+    //failed
     else if (flag == 0)
     {
         cout << "< " << seq << " > " << ": Failed " << additional << endl;
@@ -266,13 +276,15 @@ void ConditionCinOutput(string seq, int flag, string additional)
         cout << "< " << seq << " > : " << additional << endl;
     }
 }
-
+//print current condition on file
 void ConditionOutput(string seq, int flag, string additional)
 {
+    //success
     if (flag == 1)
     {
         outFile << "< " << seq << " > " << ": Success" << endl;
     }
+    //false
     else if (flag == 0)
     {
         outFile << "< " << seq << " > " << ": Failed " << additional << endl;
@@ -285,28 +297,29 @@ void ConditionOutput(string seq, int flag, string additional)
 
 int main(int argc, char* argv[])
 {
-    if (argc == 1 || argc == 2)
+    //execute with command mode
+    if (argc == 2)
     {
         string method;
         string cOutput;
         string status = "Standby";
         bool hasLoaded = false;
-
+        //7 mode
         while (cin >> method)
         {
             cOutput = method;
-
+            //input the wrong mode
             if (method != "Load" && method != "StartGame" && method != "Print" && method != "LeftClick" && method != "RightClick" && method != "Replay" && method != "Quit")
             {
                 ConditionCinOutput(cOutput, 0, ": No such method.");
                 continue;
             }
-
             if (method == "Load")
             {
                 string type;
                 cin >> type;
                 cOutput += " " + type;
+                // read file board 
                 if (type == "BoardFile")
                 {
                     string filename;
@@ -321,6 +334,7 @@ int main(int argc, char* argv[])
                     {
                         hasLoaded = true;
                         ConditionCinOutput(cOutput + " " + filename, 1, "");
+                        //make board with file
                         makeBoard(in);
                     }
                     else
@@ -328,6 +342,7 @@ int main(int argc, char* argv[])
                         ConditionCinOutput(cOutput + " " + filename, 0, ": File can't find!");
                     }
                 }
+                //random make board with a number bomb
                 if (type == "RandomCount")
                 {
                     int m, n, mines;
@@ -342,6 +357,7 @@ int main(int argc, char* argv[])
                     makeBoardRandom(m, n, "count", mines, 0);
                     hasLoaded = true;
                 }
+                //random make board with a rate of bomb
                 if (type == "RandomRate")
                 {
                     int m, n;
@@ -369,11 +385,13 @@ int main(int argc, char* argv[])
                     hasLoaded = true;
                 }
             }
+            //print mode
             if (method == "Print")
             {
                 string type;
                 cin >> type;
                 cOutput += " " + type;
+                //print gameboard
                 if (type == "GameBoard")
                 {
                     if (status == "Standby")
@@ -384,10 +402,12 @@ int main(int argc, char* argv[])
                     ConditionCinOutput(cOutput, 2, "");
                     printCinBoard(gameBoard);
                 }
+                //print gamestate
                 if (type == "GameState")
                 {
                     ConditionCinOutput(cOutput, 2, status);
                 }
+                //print the every items in board
                 if (type == "GameAnswer")
                 {
                     if (status == "Standby")
@@ -398,6 +418,7 @@ int main(int argc, char* argv[])
                     ConditionCinOutput(cOutput, 2, "");
                     printCinBoard(board);
                 }
+                //print remain bomb
                 if (type == "BombCount")
                 {
                     if (status == "Standby")
@@ -407,6 +428,7 @@ int main(int argc, char* argv[])
                     }
                     ConditionCinOutput(cOutput, 2, to_string(bombNum));
                 }
+                //print how many flag 
                 if (type == "FlagCount")
                 {
                     if (status == "Standby")
@@ -435,6 +457,7 @@ int main(int argc, char* argv[])
                     ConditionCinOutput(cOutput, 2, to_string(remainNum));
                 }
             }
+            //start to play game
             if (method == "StartGame")
             {
                 if (status != "Standby")
@@ -450,6 +473,7 @@ int main(int argc, char* argv[])
                 ConditionCinOutput(cOutput, 1, "");
                 status = "Playing";
             }
+            //input leftclick to open position
             if (method == "LeftClick")
             {
                 int y, x;
@@ -489,6 +513,7 @@ int main(int argc, char* argv[])
                     status = "GameOver";
                 }
             }
+            //right click to flag the mine
             if (method == "RightClick")
             {
                 int y, x;
@@ -513,6 +538,7 @@ int main(int argc, char* argv[])
                 NoteBoard(y, x);
                 CountItem();
             }
+            //replay the game 
             if (method == "Replay")
             {
                 if (status != "GameOver")
@@ -524,6 +550,7 @@ int main(int argc, char* argv[])
                 status = "Standby";
                 ClearBoard();
             }
+            //close game and leave
             if (method == "Quit")
             {
                 if (status != "GameOver")
@@ -536,6 +563,7 @@ int main(int argc, char* argv[])
             }
         }
     }
+    //execute with file mode
     else if (argc == 4)
     {
         inFile.open(argv[2]);
@@ -544,7 +572,7 @@ int main(int argc, char* argv[])
         string cOutput;
         string status = "Standby";
         bool hasLoaded = false;
-
+        //7 mode
         while (inFile >> method)
         {
             cOutput = method;
@@ -554,7 +582,7 @@ int main(int argc, char* argv[])
                 ConditionOutput(cOutput, 0, ": No such method.");
                 continue;
             }
-
+            //load file or random
             if (method == "Load")
             {
                 string type;
@@ -581,6 +609,7 @@ int main(int argc, char* argv[])
                         ConditionOutput(cOutput + " " + filename, 0, ": File can't find!");
                     }
                 }
+                //make random borad with a number of bomb
                 if (type == "RandomCount")
                 {
                     int m, n, mines;
@@ -595,6 +624,7 @@ int main(int argc, char* argv[])
                     makeBoardRandom(m, n, "count", mines, 0);
                     hasLoaded = true;
                 }
+                //make random borad with a rate of number of bomb
                 if (type == "RandomRate")
                 {
                     int m, n;
@@ -622,6 +652,7 @@ int main(int argc, char* argv[])
                     hasLoaded = true;
                 }
             }
+            //print information
             if (method == "Print")
             {
                 string type;
@@ -637,10 +668,12 @@ int main(int argc, char* argv[])
                     ConditionOutput(cOutput, 2, "");
                     printBoard(gameBoard);
                 }
+                //print current state
                 if (type == "GameState")
                 {
                     ConditionOutput(cOutput, 2, status);
                 }
+                //print all items on board
                 if (type == "GameAnswer")
                 {
                     if (status == "Standby")
@@ -651,6 +684,7 @@ int main(int argc, char* argv[])
                     ConditionOutput(cOutput, 2, "");
                     printBoard(board);
                 }
+                //print how many bomb remain
                 if (type == "BombCount")
                 {
                     if (status == "Standby")
@@ -660,6 +694,7 @@ int main(int argc, char* argv[])
                     }
                     ConditionOutput(cOutput, 2, to_string(bombNum));
                 }
+                //print how many flag
                 if (type == "FlagCount")
                 {
                     if (status == "Standby")
@@ -688,6 +723,7 @@ int main(int argc, char* argv[])
                     ConditionOutput(cOutput, 2, to_string(remainNum));
                 }
             }
+            //start to play game
             if (method == "StartGame")
             {
                 if (status != "Standby")
@@ -703,6 +739,7 @@ int main(int argc, char* argv[])
                 ConditionOutput(cOutput, 1, "");
                 status = "Playing";
             }
+            //left click to flag 
             if (method == "LeftClick")
             {
                 int y, x;
@@ -742,6 +779,7 @@ int main(int argc, char* argv[])
                     status = "GameOver";
                 }
             }
+            //right click to open position
             if (method == "RightClick")
             {
                 int y, x;
@@ -766,6 +804,7 @@ int main(int argc, char* argv[])
                 NoteBoard(y, x);
                 CountItem();
             }
+            //replay the game
             if (method == "Replay")
             {
                 if (status != "GameOver")
@@ -777,6 +816,7 @@ int main(int argc, char* argv[])
                 status = "Standby";
                 ClearBoard();
             }
+            //quit the game
             if (method == "Quit")
             {
                 if (status != "GameOver")
