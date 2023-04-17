@@ -298,7 +298,7 @@ void ConditionOutput(string seq, int flag, string additional)
 int main(int argc, char* argv[])
 {
     //execute with command mode
-    if (argc == 2)
+    if (argc == 1 || argc == 2)
     {
         string method;
         string cOutput;
@@ -477,8 +477,8 @@ int main(int argc, char* argv[])
             if (method == "LeftClick")
             {
                 int y, x;
-                cin >> x >> y;
-                cOutput += " " + to_string(x) + " " + to_string(y);
+                cin >> y >> x;
+                cOutput += " " + to_string(y) + " " + to_string(x);
                 if (status != "Playing")
                 {
                     ConditionCinOutput(cOutput, 0, ": Not in playing state!");
@@ -517,8 +517,8 @@ int main(int argc, char* argv[])
             if (method == "RightClick")
             {
                 int y, x;
-                cin >> x >> y;
-                cOutput += " " + to_string(x) + " " + to_string(y);
+                cin >> y >> x;
+                cOutput += " " + to_string(y) + " " + to_string(x);
                 if (status != "Playing")
                 {
                     ConditionCinOutput(cOutput, 0, ": Not in playing state!");
@@ -548,6 +548,7 @@ int main(int argc, char* argv[])
                 }
                 ConditionCinOutput(cOutput, 1, "");
                 status = "Standby";
+                hasLoaded = false;
                 ClearBoard();
             }
             //close game and leave
@@ -743,8 +744,8 @@ int main(int argc, char* argv[])
             if (method == "LeftClick")
             {
                 int y, x;
-                inFile >> x >> y;
-                cOutput += " " + to_string(x) + " " + to_string(y);
+                inFile >> y >> x;
+                cOutput += " " + to_string(y) + " " + to_string(x);
                 if (status != "Playing")
                 {
                     ConditionOutput(cOutput, 0, ": Not in playing state!");
@@ -783,8 +784,8 @@ int main(int argc, char* argv[])
             if (method == "RightClick")
             {
                 int y, x;
-                inFile >> x >> y;
-                cOutput += " " + to_string(x) + " " + to_string(y);
+                inFile >> y >> x;
+                cOutput += " " + to_string(y) + " " + to_string(x);
                 if (status != "Playing")
                 {
                     ConditionOutput(cOutput, 0, ": Not in playing state!");
@@ -814,6 +815,7 @@ int main(int argc, char* argv[])
                 }
                 ConditionOutput(cOutput, 1, "");
                 status = "Standby";
+                hasLoaded = false;
                 ClearBoard();
             }
             //quit the game
