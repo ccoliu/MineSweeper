@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -298,7 +299,11 @@ void ConditionOutput(string seq, int flag, string additional)
 int main(int argc, char* argv[])
 {
     //execute with command mode
-    if (argc == 1 || argc == 2)
+    if (argc == 2 && strcmp(argv[1], "GUI") == 0)
+    {
+        system("start .\\GUI_ver_1.0\\GUI2.exe");
+    }
+    else if (argc == 1 || (argc == 2 && strcmp(argv[1],"CommandInput") == 0))
     {
         string method;
         string cOutput;
