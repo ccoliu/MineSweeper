@@ -30,7 +30,7 @@ void CountItem()
     {
         for (int j = 0; j < row; j++)
         {
-            if (gameBoard[i][j] == '#' && board[i][j] != 'X')
+            if ((gameBoard[i][j] == '#' || gameBoard[i][j] == 'F' || gameBoard[i][j] == '?') && board[i][j] != 'X')
             {
                 remainNum++;
             }
