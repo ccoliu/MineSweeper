@@ -806,6 +806,12 @@ int main(int argc, char* argv[])
                     ConditionOutput(cOutput, 0, ": This coordinate has already been opened!");
                     continue;
                 }
+                CountItem();
+                if (flagNum > bombNum)
+                {
+                    ConditionOutput(cOutput, 0, ": No more flags left!");
+					continue;
+                }
                 ConditionOutput(cOutput, 1, "");
                 NoteBoard(y, x);
                 CountItem();
