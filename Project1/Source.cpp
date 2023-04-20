@@ -539,6 +539,12 @@ int main(int argc, char* argv[])
                     ConditionCinOutput(cOutput, 0, ": This coordinate has already been opened!");
                     continue;
                 }
+                CountItem();
+                if (flagNum > bombNum)
+                {
+                    ConditionCinOutput(cOutput, 0, ": No more flags left!");
+                    continue;
+                }
                 ConditionCinOutput(cOutput, 1, "");
                 NoteBoard(y, x);
                 CountItem();
