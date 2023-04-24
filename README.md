@@ -5,7 +5,7 @@ This project is imitate to the famous game Minesweeper.
 Install
 https://github.com/ccoliu/Project1_Minesweeper.git
 Just go to the ult and download the zip,
-Then then unzip.
+Then unzip.
 
 Usage
 First step  : open cmd
